@@ -45,3 +45,14 @@ export const filterPostsByCategory = async (category: string) => {
 		.filter((post) => !post.data.draft)
 		.filter((post) => post.data.category.toLowerCase() === category)
 }
+
+// api call to filter post by date range
+export const filterPostsByDateRange = async (startDate: Date, endDate: Date) => {
+	const posts = await getPosts()
+	return posts
+		.filter((post) => !post.data.draft)
+		.filter((post) => {
+			const postDate = new Date(post.data.pubDate)
+			return postDate >= startDate && postDate <= endDate
+		})
+}

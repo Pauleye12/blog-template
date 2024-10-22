@@ -3,10 +3,26 @@ import ListCategories from '@/components/ListCategories'
 import ListPosts from '@/components/ListPosts'
 import TitlePage from '@/components/TitlePage'
 import BaseLayout from '@/layouts/BaseLayout'
-import { getPosts } from '@/utils'
+import { getPosts, filterPostsByDateRange } from '@/utils'
 
 const MAX_POSTS = 5 // max number of posts to show on the home page
+
 const posts = await getPosts(MAX_POSTS)
+
+// const handleFilter = async (event: Event) => {
+// 	event.preventDefault()
+// 	const formData = new FormData(event.target as HTMLFormElement)
+
+// 	const startDateString = formData.get('startDate') as string
+// 	const endDateString = formData.get('endDate') as string
+
+// 	const startDate = new Date(startDateString)
+// 	const endDate = new Date(endDateString)
+
+// 	// Fetch filtered posts based on the date range
+// 	const filteredPosts = await filterPostsByDateRange(startDate, endDate)
+// 	return filteredPosts
+// }
 ---
 
 <BaseLayout title='Home'>
@@ -14,15 +30,39 @@ const posts = await getPosts(MAX_POSTS)
 	<ListCategories />
 
 	<div>
-		<h2 class='text-lg font-medium tracking-wide text-end'>Latest Posts</h2>
+		<div class='w-full flex justify-between items-center'>
+			<div class='flex text-lg font-medium items-center gap-4'>
+				<h2>Filter by Date:</h2>
+
+				<label for='startDate'>Start Date:</label>
+				<input id='startDate' class='text-black' type='date' name='startDate' required />
+
+				<label for='endDate'>End Date:</label>
+				<input id='endDate' class='text-black' type='date' name='endDate' required />
+
+				<button id='filterBtn'>Filter</button>
+
+				<!-- <button
+					class='px-2 py-1 border border-solid dark:border-gray-600 rounded-lg font-normal text-base'
+					>Reading time</button
+				> -->
+				<!-- <button
+					class='px-2 py-1 border border-solid dark:border-gray-600 rounded-lg font-normal text-base'
+					>Date</button
+				> -->
+			</div>
+			<h2 class='text-lg font-medium tracking-wide text-end'>Latest Posts</h2>
+		</div>
+
 		<ListPosts FirstBig={true} posts={posts} />
 	</div>
 </BaseLayout>
 
 <script>
 	import { animate } from 'motion'
+	import { getPosts, filterPostsByDateRange } from '@/utils'
 	const showAnimations = localStorage.getItem('animations') === 'true'
-
+	console.log('running')
 	if (showAnimations) {
 		animate(
 			'.title',
@@ -34,5 +74,16 @@ const posts = await getPosts(MAX_POSTS)
 				offset: [0, 0.55, 0.75]
 			}
 		)
+	}
+
+	const startDateInput = document.getElementById('startDate') as HTMLInputElement
+	const endDateInput = document.getElementById('endDate') as HTMLInputElement
+	const filterButton = document.getElementById('filterBtn') as HTMLButtonElement
+	//   const blogPostsContainer = document.getElementById('blog-posts') as HTMLDivElement;
+
+	const filter = async () => {
+		const startDate = new Date(startDateInput.value)
+		const endDate = new Date(endDateInput.value)
+		const filteredPosts = await filterPostsByDateRange(startDate, endDate)
 	}
 </script>

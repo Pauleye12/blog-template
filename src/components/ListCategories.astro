@@ -13,6 +13,22 @@ const { activeCategory } = Astro.props
 			<Category name={category} activeCategory={activeCategory} />
 		))
 	}
+	<!-- <button
+              class="flex items-center gap-1 border rounded-full border-[#E5EAEF] px-3 py-[5px] relative "
+              onclick={() => {
+                setShowDropdown((prev) => !prev);
+              }}
+            >
+              <p class="hidden sm:flex">{timeFrame}</p>
+              <img src="/images/Arrow - Down 2.png" alt="" />
+              {showDropdown && (
+                <ul class="absolute bottom-[-120px] left-[50%] translate-x-[-50%] border px-2 py-2 rounded-lg text-left lg:w-full w-max flex flex-col gap-2 ">
+                  <li onclick={selectTimeFrame}>Monthly</li>
+                  <li onclick={selectTimeFrame}>Weekly</li>
+                  <li onclick={selectTimeFrame}>Daily</li>
+                </ul>
+              )}
+            </button> -->
 
 	<div class='hidden sm:block absolute w-full bottom-0 border-b-2 -z-40 dark:border-gray-600'></div>
 </div>

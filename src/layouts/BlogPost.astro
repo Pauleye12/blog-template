@@ -14,7 +14,9 @@ type Props = {
 }
 
 const { data, readTime, headings, id } = Astro.props
-const { title, description, pubDate, heroImage, tags } = data
+const { title, description, pubDate, heroImage, tags, author } = data
+
+// for now I edited the schema in src/content/config.ts and added the author key
 
 const articleDate = pubDate.toISOString()
 ---
@@ -32,13 +34,18 @@ const articleDate = pubDate.toISOString()
 					<p class='text-center text-sm text-opacity-50'>
 						Published <FormattedDate date={pubDate} />
 					</p>
+
 					<p class='text-center text-sm text-opacity-50 font-bold'>
 						- {readTime}
 					</p>
 				</div>
+
 				<h1 class='text-center text-4xl md:text-6xl md:pb-2.5 font-semibold'>
 					{title}
 				</h1>
+
+				<!-- HTML to display the author -->
+				<p class='text-center text-sm text-opacity-50'>Author: {author}</p>
 			</div>
 
 			<div class='flex flex-wrap justify-center items-center gap-2 gap-y-4 md:gap-5'>
