@@ -8,11 +8,32 @@ export const getCategories = async () => {
 	return Array.from(categories)
 }
 
-export const getPosts = async (max?: number) => {
-	return (await getCollection('blog'))
+// export const getPosts = async (max?: number) => {
+// 	return (await getCollection('blog'))
+// 		.filter((post) => !post.data.draft)
+// 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+// 		.slice(0, max)
+// }
+
+// Modified the getPostd method to be dynamic
+export const getPosts = async (startDate?: Date, endDate?: Date, max?: number) => {
+	const posts = await getCollection('blog')
+
+	const filteredPosts = posts
 		.filter((post) => !post.data.draft)
+		.filter((post) => {
+			const postDate = new Date(post.data.pubDate)
+
+			const afterStart = startDate ? postDate >= startDate : true
+			const beforeEnd = endDate ? postDate <= endDate : true
+
+			return afterStart && beforeEnd
+		})
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-		.slice(0, max)
+
+	console.log(startDate)
+
+	return max ? filteredPosts.slice(0, max) : filteredPosts
 }
 
 export const getTags = async () => {
@@ -49,10 +70,10 @@ export const filterPostsByCategory = async (category: string) => {
 // api call to filter post by date range
 export const filterPostsByDateRange = async (startDate: Date, endDate: Date) => {
 	const posts = await getPosts()
-	return posts
-		.filter((post) => !post.data.draft)
-		.filter((post) => {
-			const postDate = new Date(post.data.pubDate)
-			return postDate >= startDate && postDate <= endDate
-		})
+	return 'yes'
+	// .filter((post) => !post.data.draft)
+	// .filter((post) => {
+	// 	const postDate = new Date(post.data.pubDate)
+	// 	return postDate >= startDate && postDate <= endDate
+	// })
 }
